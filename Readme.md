@@ -28,7 +28,7 @@ There are two components connected to the ESP32: a button that resets the occupa
 | SDA	| 21	|
 | SCL	| 22	|
 
-The button is connected to 3V3 and GPIO pin 4 on the ESP32.
+The button is connected to 3V3 and GPIO Pin 4 on the ESP32.
 
 ### Software Setup
 1. Network Configuration: The device requires a Wi-Fi connection to send occupancy status information via MQTT to the data visualization and storage platforms. Under `main`, go to `macro.h` and configure the Wi-Fi SSID, password, and MQTT URI.
@@ -118,7 +118,7 @@ As the **tracking** functions require dynamic memory management, CPP is used in 
 
 `human_object.cpp` defines a class that represents a human object. Functions used to handle the generation, update, and deletion of a human object are implemented here. The matching algorithm is implemented in `tracking.cpp`, which maintains a list of human objects and tracks the trajectory of detected humans.
 
-While the remaining files are not directly relevant to the algorithm, they contain necessary components of this project:
+While the remaining files are not directly relevant to the algorithm, they contain components necessary to this project:
 
 | file                                                     | utility                                                      |
 | -------------------------------------------------------- | ------------------------------------------------------------ |
