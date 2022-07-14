@@ -1,0 +1,500 @@
+[
+    {
+        "id": "9a760619e2ad3caf",
+        "type": "tab",
+        "label": "Arducam Send Image",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7acb46d65b83a497",
+        "type": "mqtt out",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "topic": "ov2640/simul",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "933bb4dd.225038",
+        "x": 880,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ec87728007104b66",
+        "type": "function",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "func": "const str = msg.payload;\nvar arr = str.split(\",\");\nvar buf = Buffer.from([parseInt(arr[0], 10)]);\nvar out;\nfor (let i = 1; i < 57600; i++){\n    var buf2 = Buffer.from([parseInt(arr[i], 10)]);\n    out = Buffer.concat([buf, buf2]);\n    buf = out;\n}\nmsg.payload = out;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 240,
+        "wires": [
+            [
+                "7acb46d65b83a497"
+            ]
+        ]
+    },
+    {
+        "id": "831cad33ad892f5a",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_7",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 360,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "4bd3a658d7d28296",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_8",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 400,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "d8e651be40fcde69",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 360,
+        "wires": [
+            [
+                "831cad33ad892f5a"
+            ]
+        ]
+    },
+    {
+        "id": "5637d47c06bf7944",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 400,
+        "wires": [
+            [
+                "4bd3a658d7d28296"
+            ]
+        ]
+    },
+    {
+        "id": "33b89c41c8c1d7f7",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Background_Image",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 440,
+        "y": 80,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "777b33b927138f00",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 80,
+        "wires": [
+            [
+                "33b89c41c8c1d7f7"
+            ]
+        ]
+    },
+    {
+        "id": "7a852fd0e2462a3b",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_1",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 120,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "cbd63500a4b8ee06",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 120,
+        "wires": [
+            [
+                "7a852fd0e2462a3b"
+            ]
+        ]
+    },
+    {
+        "id": "8b2bc86e5c13352f",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_2",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 160,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "7e057057882c06d0",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 160,
+        "wires": [
+            [
+                "8b2bc86e5c13352f"
+            ]
+        ]
+    },
+    {
+        "id": "35c4e49586ba857b",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_3",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 200,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "f185b9ed58466f1e",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 200,
+        "wires": [
+            [
+                "35c4e49586ba857b"
+            ]
+        ]
+    },
+    {
+        "id": "5c22ab036e0366af",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_4",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 240,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "26ae52437b4c9fe6",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 240,
+        "wires": [
+            [
+                "5c22ab036e0366af"
+            ]
+        ]
+    },
+    {
+        "id": "24dfc67c321022c0",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_5",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 280,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "22f239445a3c0912",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 280,
+        "wires": [
+            [
+                "24dfc67c321022c0"
+            ]
+        ]
+    },
+    {
+        "id": "de9fda1c958be76e",
+        "type": "file in",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "filename": "/Path_to_Frame_6",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 410,
+        "y": 320,
+        "wires": [
+            [
+                "ec87728007104b66"
+            ]
+        ]
+    },
+    {
+        "id": "dd92aa2dd8fba831",
+        "type": "inject",
+        "z": "9a760619e2ad3caf",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[1]",
+        "payloadType": "bin",
+        "x": 230,
+        "y": 320,
+        "wires": [
+            [
+                "de9fda1c958be76e"
+            ]
+        ]
+    },
+    {
+        "id": "933bb4dd.225038",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]

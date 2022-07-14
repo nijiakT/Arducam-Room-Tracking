@@ -1,0 +1,623 @@
+[
+    {
+        "id": "ee51570304879943",
+        "type": "tab",
+        "label": "Arducam Room Monitor",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "982bd47611d52fe2",
+        "type": "mqtt in",
+        "z": "ee51570304879943",
+        "name": "",
+        "topic": "ov2640/segmap",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "98eb1eee69569928",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 100,
+        "y": 600,
+        "wires": [
+            [
+                "bebdd04d3f085992"
+            ]
+        ]
+    },
+    {
+        "id": "50de2cee9796c059",
+        "type": "csv",
+        "z": "ee51570304879943",
+        "name": "",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 430,
+        "y": 600,
+        "wires": [
+            [
+                "f57c1471f276ffce"
+            ]
+        ]
+    },
+    {
+        "id": "c9af494b8b2f6807",
+        "type": "jimp-image",
+        "z": "ee51570304879943",
+        "name": "",
+        "data": "{\"w\":160,\"h\":120,\"background\":\"white\"}",
+        "dataType": "json",
+        "ret": "img",
+        "parameter1": "",
+        "parameter1Type": "msg",
+        "parameter2": "",
+        "parameter2Type": "msg",
+        "parameter3": "",
+        "parameter3Type": "msg",
+        "parameter4": "",
+        "parameter4Type": "msg",
+        "parameter5": "",
+        "parameter5Type": "msg",
+        "parameter6": "",
+        "parameter6Type": "msg",
+        "parameter7": "",
+        "parameter7Type": "msg",
+        "parameter8": "",
+        "parameter8Type": "msg",
+        "sendProperty": "image",
+        "sendPropertyType": "msg",
+        "parameterCount": 0,
+        "jimpFunction": "none",
+        "selectedJimpFunction": {
+            "name": "none",
+            "fn": "none",
+            "description": "Just loads the image.",
+            "parameters": []
+        },
+        "x": 270,
+        "y": 720,
+        "wires": [
+            [
+                "70d5dbc86c91ba94"
+            ]
+        ]
+    },
+    {
+        "id": "f57c1471f276ffce",
+        "type": "function",
+        "z": "ee51570304879943",
+        "name": "object to 2dArray",
+        "func": "val_arr = Object.values(msg.payload[0]);\nrows = 120;\ncols = 160;\nvar new_arr = [];\nfor (var r = 0;r<rows;r++){\n    var row=[];\n    for (var c=0;c<cols;c++){\n        var i = r*cols + c;\n        row.push(val_arr[i]);\n    }\n    new_arr.push(row);\n}\nmsg.payload=new_arr;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 660,
+        "wires": [
+            [
+                "29f4dca19d71d3e3"
+            ]
+        ]
+    },
+    {
+        "id": "29f4dca19d71d3e3",
+        "type": "change",
+        "z": "ee51570304879943",
+        "name": "setup default value",
+        "rules": [
+            {
+                "t": "set",
+                "p": "convert_factor",
+                "pt": "msg",
+                "to": "256",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "pixels",
+                "tot": "str"
+            },
+            {
+                "t": "delete",
+                "p": "columns",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 660,
+        "wires": [
+            [
+                "c9af494b8b2f6807"
+            ]
+        ]
+    },
+    {
+        "id": "e1aa6aef6c52639c",
+        "type": "template",
+        "z": "ee51570304879943",
+        "name": "forUI",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<img width=\"240px\" height=\"240px\" src=\"{{{payload}}}\">",
+        "output": "str",
+        "x": 870,
+        "y": 760,
+        "wires": [
+            [
+                "f7aa0932bfeeeeae"
+            ]
+        ]
+    },
+    {
+        "id": "4e7dd64158311097",
+        "type": "jimp-image",
+        "z": "ee51570304879943",
+        "name": "jimp2base64",
+        "data": "image",
+        "dataType": "msg",
+        "ret": "b64",
+        "parameter1": "",
+        "parameter1Type": "msg",
+        "parameter2": "",
+        "parameter2Type": "msg",
+        "parameter3": "",
+        "parameter3Type": "msg",
+        "parameter4": "",
+        "parameter4Type": "msg",
+        "parameter5": "",
+        "parameter5Type": "msg",
+        "parameter6": "",
+        "parameter6Type": "msg",
+        "parameter7": "",
+        "parameter7Type": "msg",
+        "parameter8": "",
+        "parameter8Type": "msg",
+        "sendProperty": "payload",
+        "sendPropertyType": "msg",
+        "parameterCount": 0,
+        "jimpFunction": "none",
+        "selectedJimpFunction": {
+            "name": "none",
+            "fn": "none",
+            "description": "Just loads the image.",
+            "parameters": []
+        },
+        "x": 870,
+        "y": 720,
+        "wires": [
+            [
+                "e1aa6aef6c52639c"
+            ]
+        ]
+    },
+    {
+        "id": "f7aa0932bfeeeeae",
+        "type": "ui_template",
+        "z": "ee51570304879943",
+        "group": "d477a74f.58c848",
+        "name": "ui template",
+        "order": 1,
+        "width": "8",
+        "height": "8",
+        "format": "<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": false,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 890,
+        "y": 800,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "554a2c6e1bedc156",
+        "type": "image viewer",
+        "z": "ee51570304879943",
+        "name": "",
+        "width": "160",
+        "data": "image",
+        "dataType": "msg",
+        "active": true,
+        "x": 690,
+        "y": 720,
+        "wires": [
+            [
+                "4e7dd64158311097"
+            ]
+        ]
+    },
+    {
+        "id": "70d5dbc86c91ba94",
+        "type": "join",
+        "z": "ee51570304879943",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "",
+        "count": "1",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 410,
+        "y": 720,
+        "wires": [
+            [
+                "23319e3f6a53a9b3"
+            ]
+        ]
+    },
+    {
+        "id": "23319e3f6a53a9b3",
+        "type": "function",
+        "z": "ee51570304879943",
+        "name": "colorbinary",
+        "func": "const data = msg.payload.pixels;\nconst img = msg.image;\nvar buf = Buffer.from([255,255,255,255]); //temp buffer object for rgbaToInt\nfor(let y = 0; y < data.length; y++){\n    let row = data[y];\n    for(let x = 0; x < row.length; x++){\n        let label = row[x];\n        let c = hsl_to_rgb(label*60,70,(label!=0)*50);\n        img.setPixelColor(c, x, y);\n    }\n}\nreturn msg\nfunction hsl_to_rgb(h, s, l) {\n  // Must be fractions of 1\n  s /= 100;\n  l /= 100;\n\n  let c = (1 - Math.abs(2 * l - 1)) * s,\n      x = c * (1 - Math.abs((h / 60) % 2 - 1)),\n      m = l - c/2,\n      r = 0,\n      g = 0,\n      b = 0;\n  if (0 <= h && h < 60) {\n    r = c; g = x; b = 0;  \n  } else if (60 <= h && h < 120) {\n    r = x; g = c; b = 0;\n  } else if (120 <= h && h < 180) {\n    r = 0; g = c; b = x;\n  } else if (180 <= h && h < 240) {\n    r = 0; g = x; b = c;\n  } else if (240 <= h && h < 300) {\n    r = x; g = 0; b = c;\n  } else if (300 <= h && h < 360) {\n    r = c; g = 0; b = x;\n  }\n  r = Math.round((r + m) * 255);\n  g = Math.round((g + m) * 255);\n  b = Math.round((b + m) * 255);\n  return rgbaToInt(r, g, b, 255);\n}\n\nfunction rgbaToInt(red,green,blue,alpha){\n    \n    var r = red & 0xFF;\n    var g = green & 0xFF;\n    var b = blue & 0xFF;\n    var a = alpha & 0xFF;\n    \n    buf[0] = r;\n    buf[1] = g;\n    buf[2] = b;\n    buf[3] = a;\n    return buf.readUInt32BE(0);\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 720,
+        "wires": [
+            [
+                "554a2c6e1bedc156"
+            ]
+        ]
+    },
+    {
+        "id": "bebdd04d3f085992",
+        "type": "function",
+        "z": "ee51570304879943",
+        "name": "bufToString",
+        "func": "var inbuf = msg.payload\nvar out = \"\"\n\nfor (let i = 0; i < 19200; i++){\n    var value = inbuf.readUInt8(i)\n    var temp = out.concat(value.toString(), \", \")\n    out = temp\n}\n\nmsg.payload = out.slice(0, -2)\nreturn msg;\n\n// msg.payload = msg.topic.readUInt8(0).toString()\n// // msg.payload = parseInt(\"00101001\", 2)\n// return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 600,
+        "wires": [
+            [
+                "50de2cee9796c059"
+            ]
+        ]
+    },
+    {
+        "id": "f7a83f81c777f2d8",
+        "type": "mqtt in",
+        "z": "ee51570304879943",
+        "name": "",
+        "topic": "ov2640/base64",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "933bb4dd.225038",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 100,
+        "y": 360,
+        "wires": [
+            [
+                "3f7039c07fef5dd9"
+            ]
+        ]
+    },
+    {
+        "id": "f9c91c605b2fc0cc",
+        "type": "Message Counter",
+        "z": "ee51570304879943",
+        "name": "",
+        "units": "seconds",
+        "interval": 1,
+        "alignToClock": true,
+        "generator": "internal",
+        "x": 350,
+        "y": 360,
+        "wires": [
+            [],
+            [
+                "fb2cd112b7a136f3"
+            ]
+        ],
+        "outputLabels": [
+            "count",
+            "msg"
+        ]
+    },
+    {
+        "id": "3f7039c07fef5dd9",
+        "type": "change",
+        "z": "ee51570304879943",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "jpeg_base64",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 190,
+        "y": 300,
+        "wires": [
+            [
+                "f9c91c605b2fc0cc"
+            ]
+        ]
+    },
+    {
+        "id": "6bc9bdc2436150dc",
+        "type": "mqtt in",
+        "z": "ee51570304879943",
+        "name": "",
+        "topic": "ovcount",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "933bb4dd.225038",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 580,
+        "y": 360,
+        "wires": [
+            [
+                "610e72580218b9e2",
+                "a2ccfffdd7e9bd7d"
+            ]
+        ]
+    },
+    {
+        "id": "610e72580218b9e2",
+        "type": "ui_text",
+        "z": "ee51570304879943",
+        "group": "efcf5006.15dae",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "current count",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 780,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a2ccfffdd7e9bd7d",
+        "type": "ui_chart",
+        "z": "ee51570304879943",
+        "name": "",
+        "group": "efcf5006.15dae",
+        "order": 2,
+        "width": "6",
+        "height": "4",
+        "label": "count history",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-20",
+        "ymax": "20",
+        "removeOlder": "15",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "db5b0ef6cdcf5b39",
+        "type": "mqtt in",
+        "z": "ee51570304879943",
+        "name": "",
+        "topic": "ovSavePic",
+        "qos": "0",
+        "datatype": "buffer",
+        "broker": "933bb4dd.225038",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 80,
+        "y": 520,
+        "wires": [
+            [
+                "c180aa5728aa37fa"
+            ]
+        ]
+    },
+    {
+        "id": "abc8527d285cc84e",
+        "type": "file",
+        "z": "ee51570304879943",
+        "name": "",
+        "filename": "/Path_to_Image_.txt_File",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 550,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c180aa5728aa37fa",
+        "type": "function",
+        "z": "ee51570304879943",
+        "name": "saveCol",
+        "func": "var inbuf = msg.payload\nvar out = \"\"\n\nfor (let i = 0; i < 57600; i++){\n    var value = inbuf.readUInt8(i)\n    var temp = out.concat(value.toString(), \", \")\n    out = temp\n}\ntemp = out.concat(\"end\")\nout = temp\n\nmsg.payload = out.slice(0, -2)\nreturn msg;\n\n// msg.payload = msg.topic.readUInt8(0).toString()\n// // msg.payload = parseInt(\"00101001\", 2)\n// return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 520,
+        "wires": [
+            [
+                "abc8527d285cc84e"
+            ]
+        ]
+    },
+    {
+        "id": "fb2cd112b7a136f3",
+        "type": "ui_template",
+        "z": "ee51570304879943",
+        "group": "efcf5006.15dae",
+        "name": "Display image",
+        "order": 4,
+        "width": "8",
+        "height": "8",
+        "format": "<img width=\"160\" height=\"120\" src=\"data:image/jpeg;base64,{{msg.payload}}\" />\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 180,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98eb1eee69569928",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt://test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d477a74f.58c848",
+        "type": "ui_group",
+        "name": "Take photo",
+        "tab": "65324def.436554",
+        "order": 2,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "933bb4dd.225038",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "efcf5006.15dae",
+        "type": "ui_group",
+        "name": "Video Stream",
+        "tab": "65324def.436554",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "65324def.436554",
+        "type": "ui_tab",
+        "name": "OV2640",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
